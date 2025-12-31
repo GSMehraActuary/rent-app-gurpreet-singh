@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Fix for dropdowns getting cut off inside tables */
+        .table-responsive {
+            overflow-x: visible !important; 
+        }
+    </style>
+</head>
+<body class="p-4 bg-light">
+    
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Owner Dashboard 🛠️</h2>
+        <a href="/add-tenant" class="btn btn-success">+ Add New Tenant</a>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body p-0">
+            <table class="table table-striped table-hover mb-0">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Name</th>
+                        <th>Address</th>
+                        <th>Current Bill</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in tenants %}
+                    <tr class="align-middle">
+                        <td>
+                            <strong>{{ row.name }}</strong><br>
+                            <small class="text-muted">{{ row.phone }}</small>
+                        </td>
+                        <td>{{ row.address }}</td>
+                        
+                        <td>
+                            {% if "Need" in row.status or "No Data" in row.status %}
+                                <span class="badge bg-secondary">{{ row.status }}</span>
+                            {% else %}
+                                <span class="badge bg-primary fs-6">{{ row.status }}</span>
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            <div class="d-flex gap-2">
+                                {% if row.whatsapp_link != "#" %}
+                                <a href="{{ row.whatsapp_link }}" target="_blank" class="btn btn-sm btn-success">
+                                    WhatsApp 🚀
+                                </a>
+                                {% else %}
+                                <button disabled class="btn btn-sm btn-secondary">Wait..</button>
+                                {% endif %}
+
+                                <div class="dropdown">
+                                    <button class="btn btn-sm btn-outline-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        ⚙️
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="/edit-tenant/{{ row.id }}">✏️ Edit Details</a></li>
+                                        <li><a class="dropdown-item" href="/history/{{ row.id }}">📜 View History</a></li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li><a class="dropdown-item text-danger" href="/delete-tenant/{{ row.id }}" onclick="return confirm('Delete this tenant?')">🗑️ Delete</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
