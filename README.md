@@ -4,8 +4,8 @@
 A centralized, multi-tenant property management platform engineered to replace manual, error-prone Excel bookkeeping. This application automates the ingestion of monthly utility readings, executes conditional pricing transformations, and dynamically generates itemized financial reports for landlords and tenants. 
 
 **Screenshots:**
-*(Insert ![Dashboard View](link_to_dashboard_image.png) here)*
-*(Insert ![Data Entry View](link_to_entry_image.png) here)*
+*![Dashboard View](link_to_dashboard_image.png)*
+*[Data Entry View](link_to_entry_image.png)*
 
 ## Architecture & Data Flow
 This project functions as a complete ETL (Extract, Transform, Load) pipeline:
