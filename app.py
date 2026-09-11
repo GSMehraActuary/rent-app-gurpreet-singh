@@ -4,6 +4,31 @@ from functools import wraps
 from flask import Response
 import os
 from dotenv import load_dotenv
+from flask import request
+
+# --- SECURITY ---
+def check_auth(username, password):
+    # Pulling credentials securely from Render/Environment
+    admin_user = os.environ.get('ADMIN_USERNAME')
+    admin_pass = os.environ.get('ADMIN_PASSWORD')
+    
+    # Check if they match what the user typed in
+    return username == admin_user and password == admin_pass
+
+def authenticate():
+    return Response(
+    'Could not verify your access level for that URL.\n'
+    'You have to login with proper credentials', 401,
+    {'WWW-Authenticate': 'Basic realm="Login Required"'})
+
+def requires_auth(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        auth = request.authorization
+        if not auth or not check_auth(auth.username, auth.password):
+            return authenticate()
+        return f(*args, **kwargs)
+    return decorated
 
 # Load the hidden variables from .env file
 load_dotenv() 
@@ -65,11 +90,6 @@ def submit_reading():
     # 3. Go back to home page (or show success)
     return f"<h1>{msg}</h1><a href='/'>Back</a>"
 
-
-# --- SECURITY: The Bouncer ---
-def check_auth(username, password):
-    # CHANGE THIS to your desired login!
-    return username == 'admin' and password == 'rent123'
 
 def authenticate():
     return Response(
