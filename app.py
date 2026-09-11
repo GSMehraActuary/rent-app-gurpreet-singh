@@ -2,7 +2,21 @@ from flask import Flask, render_template, request, redirect
 import mysql.connector
 from functools import wraps
 from flask import Response
+import os
+from dotenv import load_dotenv
 
+# Load the hidden variables from .env file
+load_dotenv() 
+
+# -CONFIGURATION-
+DB_CONFIG = {
+    'host': 'rent-app-gurpreet-singh-rent-app-gurpreet-singh.l.aivencloud.com',
+    'port': 18143,
+    'user': 'avnadmin',
+    'password': os.environ.get('DB_PASSWORD'), 
+    'database': 'defaultdb',
+    'ssl_disabled': False
+}
 app = Flask(__name__)
 
 # --- CONFIGURATION ---

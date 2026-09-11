@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}RentManager{% endblock %}</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+
+    <style>
+        /* ── Design Tokens ───────────────────────────────────── */
+        :root {
+            --rm-font:          'Inter', system-ui, -apple-system, sans-serif;
+            --rm-bg:            #f1f5f9;          /* slate-100 */
+            --rm-surface:       #ffffff;
+            --rm-surface-alt:   #f8fafc;          /* slate-50  */
+            --rm-border:        #e2e8f0;          /* slate-200 */
+            --rm-border-light:  #f1f5f9;          /* slate-100 */
+            --rm-text:          #0f172a;          /* slate-900 */
+            --rm-text-muted:    #64748b;          /* slate-500 */
+            --rm-primary:       #4f46e5;          /* indigo-600 */
+            --rm-primary-hover: #4338ca;          /* indigo-700 */
+            --rm-primary-soft:  #eef2ff;          /* indigo-50  */
+            --rm-success:       #059669;          /* emerald-600 */
+            --rm-success-hover: #047857;          /* emerald-700 */
+            --rm-danger:        #dc2626;          /* red-600 */
+            --rm-warning:       #d97706;          /* amber-600 */
+            --rm-warning-soft:  #fffbeb;          /* amber-50  */
+            --rm-radius:        0.625rem;         /* 10px */
+            --rm-radius-lg:     0.875rem;         /* 14px */
+            --rm-shadow-sm:     0 1px 2px rgba(0,0,0,.05);
+            --rm-shadow:        0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.04);
+            --rm-shadow-md:     0 4px 6px -1px rgba(0,0,0,.08), 0 2px 4px -2px rgba(0,0,0,.04);
+            --rm-transition:    160ms ease;
+        }
+
+        /* ── Global Reset & Base ─────────────────────────────── */
+        *, *::before, *::after { box-sizing: border-box; }
+
+        body {
+            font-family: var(--rm-font);
+            background: var(--rm-bg);
+            color: var(--rm-text);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* ── Navbar ──────────────────────────────────────────── */
+        .rm-navbar {
+            background: var(--rm-surface);
+            border-bottom: 1px solid var(--rm-border);
+            box-shadow: var(--rm-shadow-sm);
+            padding: .625rem 0;
+        }
+        .rm-navbar .navbar-brand {
+            font-weight: 700;
+            font-size: 1.125rem;
+            color: var(--rm-primary);
+            letter-spacing: -0.02em;
+            display: flex;
+            align-items: center;
+            gap: .5rem;
+        }
+        .rm-navbar .navbar-brand i {
+            font-size: 1.25rem;
+        }
+        .rm-navbar .nav-link {
+            font-weight: 500;
+            font-size: .875rem;
+            color: var(--rm-text-muted);
+            padding: .5rem .875rem;
+            border-radius: var(--rm-radius);
+            transition: color var(--rm-transition), background var(--rm-transition);
+        }
+        .rm-navbar .nav-link:hover,
+        .rm-navbar .nav-link.active {
+            color: var(--rm-primary);
+            background: var(--rm-primary-soft);
+        }
+
+        /* ── Page Content ────────────────────────────────────── */
+        .rm-page {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 2rem 1rem 3rem;
+        }
+
+        /* ── Page Header ─────────────────────────────────────── */
+        .rm-page-header {
+            margin-bottom: 1.75rem;
+        }
+        .rm-page-header h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: .5rem;
+        }
+        .rm-page-header h1 i {
+            color: var(--rm-primary);
+        }
+        .rm-page-header p {
+            color: var(--rm-text-muted);
+            font-size: .875rem;
+            margin: .25rem 0 0;
+        }
+
+        /* ── Cards ───────────────────────────────────────────── */
+        .rm-card {
+            background: var(--rm-surface);
+            border: 1px solid var(--rm-border);
+            border-radius: var(--rm-radius-lg);
+            box-shadow: var(--rm-shadow);
+            transition: box-shadow var(--rm-transition);
+        }
+        .rm-card:hover {
+            box-shadow: var(--rm-shadow-md);
+        }
+
+        /* ── Tables ──────────────────────────────────────────── */
+        .rm-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            font-size: .875rem;
+        }
+        .rm-table thead th {
+            background: var(--rm-surface-alt);
+            color: var(--rm-text-muted);
+            font-weight: 600;
+            font-size: .75rem;
+            text-transform: uppercase;
+            letter-spacing: .05em;
+            padding: .75rem 1rem;
+            border-bottom: 1px solid var(--rm-border);
+            white-space: nowrap;
+        }
+        .rm-table tbody td {
+            padding: .875rem 1rem;
+            vertical-align: middle;
+            border-bottom: 1px solid var(--rm-border-light);
+            color: var(--rm-text);
+        }
+        .rm-table tbody tr {
+            transition: background var(--rm-transition);
+        }
+        .rm-table tbody tr:hover {
+            background: var(--rm-primary-soft);
+        }
+        .rm-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Fix for dropdowns getting cut off inside tables */
+        .table-responsive {
+            overflow: visible !important;
+        }
+
+        /* ── Buttons ─────────────────────────────────────────── */
+        .btn {
+            font-family: var(--rm-font);
+            font-weight: 500;
+            font-size: .875rem;
+            border-radius: var(--rm-radius);
+            padding: .5rem 1rem;
+            transition: all var(--rm-transition);
+            border: none;
+        }
+        .btn-sm {
+            padding: .375rem .75rem;
+            font-size: .8125rem;
+        }
+
+        .btn-primary {
+            background: var(--rm-primary);
+            color: #fff;
+        }
+        .btn-primary:hover, .btn-primary:focus {
+            background: var(--rm-primary-hover);
+            color: #fff;
+        }
+
+        .btn-success {
+            background: var(--rm-success);
+            color: #fff;
+        }
+        .btn-success:hover, .btn-success:focus {
+            background: var(--rm-success-hover);
+            color: #fff;
+        }
+
+        .btn-outline-secondary {
+            border: 1px solid var(--rm-border);
+            color: var(--rm-text-muted);
+            background: var(--rm-surface);
+        }
+        .btn-outline-secondary:hover {
+            background: var(--rm-surface-alt);
+            color: var(--rm-text);
+            border-color: var(--rm-text-muted);
+        }
+
+        .btn-outline-primary {
+            border: 1px solid var(--rm-primary);
+            color: var(--rm-primary);
+            background: transparent;
+        }
+        .btn-outline-primary:hover {
+            background: var(--rm-primary);
+            color: #fff;
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--rm-text-muted);
+            border: 1px solid var(--rm-border);
+        }
+        .btn-ghost:hover {
+            background: var(--rm-surface-alt);
+            color: var(--rm-text);
+        }
+
+        .btn-danger-subtle {
+            color: var(--rm-danger);
+            background: transparent;
+        }
+        .btn-danger-subtle:hover {
+            background: #fef2f2;
+            color: var(--rm-danger);
+        }
+
+        .btn-warning-subtle {
+            color: var(--rm-warning);
+            background: var(--rm-warning-soft);
+            border: 1px solid #fde68a;
+        }
+        .btn-warning-subtle:hover {
+            background: #fef3c7;
+        }
+
+        /* ── Badges ──────────────────────────────────────────── */
+        .rm-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: .25rem;
+            font-size: .75rem;
+            font-weight: 600;
+            padding: .25rem .625rem;
+            border-radius: 9999px;
+            white-space: nowrap;
+        }
+        .rm-badge-primary {
+            background: var(--rm-primary-soft);
+            color: var(--rm-primary);
+        }
+        .rm-badge-muted {
+            background: var(--rm-surface-alt);
+            color: var(--rm-text-muted);
+            border: 1px solid var(--rm-border);
+        }
+
+        /* ── Forms ───────────────────────────────────────────── */
+        .rm-form-card {
+            background: var(--rm-surface);
+            border: 1px solid var(--rm-border);
+            border-radius: var(--rm-radius-lg);
+            box-shadow: var(--rm-shadow-md);
+            padding: 2rem;
+        }
+        .form-floating > .form-control,
+        .form-floating > .form-select {
+            border: 1px solid var(--rm-border);
+            border-radius: var(--rm-radius);
+            transition: border-color var(--rm-transition), box-shadow var(--rm-transition);
+            font-family: var(--rm-font);
+        }
+        .form-floating > .form-control:focus,
+        .form-floating > .form-select:focus {
+            border-color: var(--rm-primary);
+            box-shadow: 0 0 0 3px rgba(79,70,229,.12);
+        }
+        .form-floating > label {
+            font-size: .875rem;
+            color: var(--rm-text-muted);
+        }
+
+        /* ── Dropdown Menus ──────────────────────────────────── */
+        .dropdown-menu {
+            border: 1px solid var(--rm-border);
+            border-radius: var(--rm-radius);
+            box-shadow: var(--rm-shadow-md);
+            padding: .375rem;
+            font-size: .875rem;
+        }
+        .dropdown-item {
+            border-radius: calc(var(--rm-radius) - 2px);
+            padding: .5rem .75rem;
+            font-weight: 500;
+            transition: background var(--rm-transition);
+        }
+        .dropdown-item:hover {
+            background: var(--rm-primary-soft);
+        }
+        .dropdown-item.text-danger:hover {
+            background: #fef2f2;
+        }
+
+        /* ── Utility ─────────────────────────────────────────── */
+        .text-muted-custom { color: var(--rm-text-muted) !important; }
+        .gap-row { gap: .5rem; }
+
+        /* ── Responsive ──────────────────────────────────────── */
+        @media (max-width: 768px) {
+            .rm-page {
+                padding: 1.25rem .75rem 2rem;
+            }
+            .rm-page-header h1 {
+                font-size: 1.25rem;
+            }
+            .rm-form-card {
+                padding: 1.25rem;
+            }
+            .rm-table thead th,
+            .rm-table tbody td {
+                padding: .625rem .75rem;
+            }
+        }
+
+        {% block extra_css %}{% endblock %}
+    </style>
+</head>
+<body>
+
+    <!-- ── Top Navigation ──────────────────────────────────── -->
+    <nav class="navbar navbar-expand-md rm-navbar sticky-top">
+        <div class="container-fluid" style="max-width:1100px; margin:0 auto;">
+            <a class="navbar-brand" href="/admin">
+                <i class="bi bi-buildings"></i> RentManager
+            </a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#rmNav" aria-controls="rmNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="rmNav">
+                <ul class="navbar-nav ms-auto gap-1">
+                    <li class="nav-item">
+                        <a class="nav-link {% block nav_admin %}{% endblock %}" href="/admin">
+                            <i class="bi bi-grid-1x2-fill me-1"></i>Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% block nav_staff %}{% endblock %}" href="/staff">
+                            <i class="bi bi-lightning-charge-fill me-1"></i>Meter Entry
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% block nav_add_tenant %}{% endblock %}" href="/add-tenant">
+                            <i class="bi bi-person-plus-fill me-1"></i>Add Tenant
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ── Main Content ────────────────────────────────────── -->
+    <main class="rm-page">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

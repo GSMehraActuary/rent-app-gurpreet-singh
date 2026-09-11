@@ -1,34 +1,42 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Edit Tenant</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body class="p-4 bg-light">
-    <div class="container" style="max-width: 500px;">
-        <h3>Edit Tenant: {{ tenant.name }}</h3>
-        
-        <form method="POST" class="card p-4 mt-3 shadow-sm">
-            <div class="mb-3">
-                <label>Name:</label>
-                <input type="text" name="name" class="form-control" value="{{ tenant.name }}">
-            </div>
-            
-            <div class="mb-3">
-                <label>Base Rent (₹):</label>
-                <input type="number" name="base_rent" class="form-control" value="{{ tenant.base_rent }}">
+{% extends "base.html" %}
+
+{% block title %}Edit Tenant — RentManager{% endblock %}
+
+{% block content %}
+    <div class="row justify-content-center">
+        <div class="col-12 col-sm-10 col-md-7 col-lg-5">
+
+            <!-- Page Header -->
+            <div class="rm-page-header">
+                <h1><i class="bi bi-pencil-square"></i> Edit Tenant</h1>
+                <p>Updating details for <strong>{{ tenant.name }}</strong></p>
             </div>
 
-            <div class="mb-3">
-                <label>Phone (91...):</label>
-                <input type="text" name="phone" class="form-control" value="{{ tenant.phone }}">
-            </div>
+            <!-- Form Card -->
+            <form method="POST" class="rm-form-card">
 
-            <div class="d-flex gap-2">
-                <button type="submit" class="btn btn-success flex-grow-1">Update Info</button>
-                <a href="/admin" class="btn btn-secondary">Cancel</a>
-            </div>
-        </form>
+                <div class="form-floating mb-3">
+                    <input type="text" name="name" id="editName" class="form-control" value="{{ tenant.name }}">
+                    <label for="editName">Full Name</label>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <input type="number" name="base_rent" id="editRent" class="form-control" value="{{ tenant.base_rent }}">
+                    <label for="editRent">Base Rent (₹)</label>
+                </div>
+
+                <div class="form-floating mb-4">
+                    <input type="text" name="phone" id="editPhone" class="form-control" value="{{ tenant.phone }}">
+                    <label for="editPhone">Phone (91…)</label>
+                </div>
+
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-primary flex-grow-1">
+                        <i class="bi bi-check-lg me-1"></i>Update Info
+                    </button>
+                    <a href="/admin" class="btn btn-outline-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
     </div>
-</body>
-</html>
+{% endblock %}

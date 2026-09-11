@@ -1,17 +1,37 @@
-<!DOCTYPE html>
-<html>
-<head><title>Edit Reading</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body class="p-4 container" style="max-width:500px">
-    <h3>Edit Reading ✏️</h3>
-    <form method="POST" class="card p-3 mt-3">
-        <label>Date:</label>
-        <input type="date" name="reading_date" value="{{ reading.reading_date }}" class="form-control mb-3">
-        
-        <label>Reading Value:</label>
-        <input type="number" name="reading_value" value="{{ reading.reading_value }}" class="form-control mb-3">
-        
-        <button type="submit" class="btn btn-primary">Update</button>
-    </form>
-</body></html>
+{% extends "base.html" %}
+
+{% block title %}Edit Reading — RentManager{% endblock %}
+
+{% block content %}
+    <div class="row justify-content-center">
+        <div class="col-12 col-sm-10 col-md-7 col-lg-5">
+
+            <!-- Page Header -->
+            <div class="rm-page-header">
+                <h1><i class="bi bi-pencil-square"></i> Edit Reading</h1>
+                <p>Correct a previously recorded meter reading</p>
+            </div>
+
+            <!-- Form Card -->
+            <form method="POST" class="rm-form-card">
+
+                <div class="form-floating mb-3">
+                    <input type="date" name="reading_date" id="editDate" class="form-control" value="{{ reading.reading_date }}">
+                    <label for="editDate"><i class="bi bi-calendar3 me-1"></i>Date</label>
+                </div>
+
+                <div class="form-floating mb-4">
+                    <input type="number" name="reading_value" id="editValue" class="form-control" value="{{ reading.reading_value }}">
+                    <label for="editValue"><i class="bi bi-speedometer2 me-1"></i>Reading Value (kWh)</label>
+                </div>
+
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-primary flex-grow-1">
+                        <i class="bi bi-check-lg me-1"></i>Update Reading
+                    </button>
+                    <a href="/admin" class="btn btn-outline-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
