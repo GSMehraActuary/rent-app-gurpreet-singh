@@ -19,16 +19,6 @@ DB_CONFIG = {
 }
 app = Flask(__name__)
 
-# --- CONFIGURATION ---
-DB_CONFIG = {
-    'host': 'rent-app-gurpreet-singh-rent-app-gurpreet-singh.l.aivencloud.com',
-    'port': 18143,
-    'user': 'avnadmin',
-    'password': 'AVNS_GSJlvWTTYMBsoWlB537',  # <--- PASTE YOUR PASSWORD HERE AGAIN
-    'database': 'defaultdb',
-    'ssl_disabled': False
-}
-
 def get_db_connection():
     return mysql.connector.connect(
         **DB_CONFIG,
